@@ -1,0 +1,21 @@
+fieldset {
+  border-radius: 6px;
+  border: none;
+  background-color: lightgray;
+  padding: 4px 2px
+}
+
+.segmented-option {
+  display: inline-block;
+  border-radius: 4px;
+  margin: 0px 2px;
+  padding: 4px;
+}
+
+.segmented-option.selected {
+  background-color: white;
+}
+
+.segmented-option-value {
+  display: none;
+}
