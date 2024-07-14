@@ -1,21 +1,58 @@
-fieldset {
-  border-radius: 6px;
+.segmented-group {
+  --backgournd-color: lightgrey;
+  --selected-option-color: white;
+
+  height: fit-content;
+  padding: 4px 2px;
   border: none;
-  background-color: lightgray;
-  padding: 4px 2px
+  border-radius: 6px;
+  background-color: var(--backgournd-color);
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
 }
 
 .segmented-option {
   display: inline-block;
+  position: relative;
   border-radius: 4px;
   margin: 0px 2px;
   padding: 4px;
+  cursor: pointer;
 }
 
 .segmented-option.selected {
-  background-color: white;
+  background-color: var(--selected-option-color);
+}
+
+.segmented-option-label {
+  cursor: pointer;
 }
 
 .segmented-option-value {
   display: none;
 }
+
+.segmented-option-in-transition {
+  position: absolute;
+  left: 0;
+  height: 32px;
+  border-radius: 4px;
+  background-color: var(--selected-option-color);
+}
+
+
+.segmented-transition-enter {
+  transform: translateX(var(--transition-start-left));
+  width: var(--transition-start-width);
+}
+
+.segmented-transition-enter-active {
+  transform: translateX(var(--transition-active-left));
+  width: var(--transition-active-width);
+  transition: width 300ms ease-out, transform 300ms ease-out;
+}
+
