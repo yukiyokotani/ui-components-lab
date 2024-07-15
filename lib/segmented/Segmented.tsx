@@ -92,7 +92,7 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
     <CSSTransition
       in={isInTransition && !!prevStyle && !!nextStyle}
       nodeRef={optionTransitionRef}
-      timeout={1000}
+      timeout={300}
       classNames='segmented-transition'
       onEntered={handleEntered}
       unmountOnExit
