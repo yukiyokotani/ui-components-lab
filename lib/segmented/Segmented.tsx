@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import './segmented.css';
@@ -29,7 +29,7 @@ const toPX = (value: number) =>
 
 type OptionTransitionProps = {
   containerRef: React.RefObject<HTMLDivElement>;
-  transitionShow: boolean;
+  isInTransition: boolean;
   value: SegmentedValue;
   getValueIndex: (value: SegmentedValue) => number;
   onMotionStart: VoidFunction;
@@ -38,7 +38,7 @@ type OptionTransitionProps = {
 
 const OptionTransition: React.FC<OptionTransitionProps> = ({
   containerRef,
-  transitionShow,
+  isInTransition,
   value,
   getValueIndex,
   onMotionStart,
@@ -56,7 +56,7 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
           '.segmented-option'
         )[index];
 
-      return ele?.offsetParent && ele;
+      return ele;
     },
     [containerRef, getValueIndex]
   );
@@ -78,21 +78,9 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
 
       if (prev && next) {
         onMotionStart();
-      } else {
-        onMotionEnd();
       }
     }
   }, [findValueElement, onMotionEnd, onMotionStart, prevValue, value]);
-
-  const transitionStart = useMemo(
-    () => toPX(prevStyle?.left as number),
-    [prevStyle]
-  );
-
-  const transitionActive = useMemo(
-    () => toPX(nextStyle?.left as number),
-    [nextStyle]
-  );
 
   const handleEntered = useCallback(() => {
     setPrevStyle(null);
@@ -102,7 +90,7 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
 
   return (
     <CSSTransition
-      in={transitionShow && !!prevStyle && !!nextStyle}
+      in={isInTransition && !!prevStyle && !!nextStyle}
       nodeRef={optionTransitionRef}
       timeout={1000}
       classNames='segmented-transition'
@@ -114,13 +102,13 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
         className='segmented-option-in-transition'
         style={
           {
-            '--transition-start-left': transitionStart,
+            '--transition-start-left': toPX(prevStyle?.left ?? 0),
             '--transition-start-width': toPX(prevStyle?.width ?? 0),
-            '--transition-active-left': transitionActive,
+            '--transition-active-left': toPX(nextStyle?.left ?? 0),
             '--transition-active-width': toPX(nextStyle?.width ?? 0)
           } as React.CSSProperties
         }
-      ></div>
+      />
     </CSSTransition>
   );
 };
@@ -144,7 +132,7 @@ export const Segmented = <T extends string | Option>({
 }: SegmentedProps<T>) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [transitionShow, setTransitionShow] = useState(false);
+  const [isInTransition, setIsInTransition] = useState(false);
 
   const [selectedValue, setSelectedValue] = useState<SegmentedValue>(value);
 
@@ -153,7 +141,7 @@ export const Segmented = <T extends string | Option>({
       <fieldset>
         <OptionTransition
           containerRef={containerRef}
-          transitionShow={transitionShow}
+          isInTransition={isInTransition}
           value={selectedValue}
           getValueIndex={(value) =>
             segmentedOptions.findIndex(
@@ -161,10 +149,10 @@ export const Segmented = <T extends string | Option>({
             )
           }
           onMotionStart={() => {
-            setTransitionShow(true);
+            setIsInTransition(true);
           }}
           onMotionEnd={() => {
-            setTransitionShow(false);
+            setIsInTransition(false);
           }}
         />
         {segmentedOptions.map((option) => {
@@ -175,7 +163,7 @@ export const Segmented = <T extends string | Option>({
               key={typeof option === 'string' ? option : option.value}
               className={clsx({
                 'segmented-option': true,
-                selected: optionValue === selectedValue && !transitionShow
+                selected: optionValue === selectedValue && !isInTransition
               })}
             >
               <label className='segmented-option-label'>

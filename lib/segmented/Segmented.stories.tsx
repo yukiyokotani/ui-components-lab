@@ -18,10 +18,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary: Story = {
+export const ValueOnly: Story = {
   args: {
     segmentedOptions: ['asparagus', 'tomato', 'onion'],
     value: 'onion',
+    onChange: (value) => console.log(value)
+  }
+};
+
+export const ValueAndLabel: Story = {
+  args: {
+    segmentedOptions: [
+      { label: 'asparagus', value: 1 },
+      { label: 'tomato', value: 2 },
+      { label: 'onion', value: 3 }
+    ],
+    value: 2,
     onChange: (value) => console.log(value)
   }
 };
