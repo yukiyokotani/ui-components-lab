@@ -1,0 +1,37 @@
+.segmented-group {
+  --backgournd-color: lightgrey;
+  --selected-option-color: white;
+
+  height: fit-content;
+  padding: 4px 2px;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--backgournd-color);
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.segmented-option {
+  display: inline-block;
+  position: relative;
+  border-radius: 4px;
+  margin: 0px 2px;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.segmented-option.selected {
+  background-color: var(--selected-option-color);
+}
+
+.segmented-option-label {
+  cursor: pointer;
+}
+
+.segmented-option-value {
+  display: none;
+}
