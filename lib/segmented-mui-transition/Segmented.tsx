@@ -215,7 +215,7 @@ export const Segmented = <T extends string | Option>({
                 color:
                   optionValue === selectedValue
                     ? theme.palette.primary.contrastText
-                    : theme.palette.text.primary,
+                    : theme.palette.text.disabled,
                 backgroundColor:
                   optionValue === selectedValue && !isInTransition
                     ? theme.palette.primary.main
