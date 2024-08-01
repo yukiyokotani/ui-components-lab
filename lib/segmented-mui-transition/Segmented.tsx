@@ -1,7 +1,8 @@
-import { Box } from '@mui/material';
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { Box, useTheme } from '@mui/material';
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
-import './segmented2.css';
+
+const DURATION = 300;
 
 type SegmentedValue = string | number;
 
@@ -43,6 +44,7 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
   onMotionStart,
   onMotionEnd
 }) => {
+  const theme = useTheme();
   const optionTransitionRef = useRef<HTMLDivElement>(null);
 
   const [prevValue, setPrevValue] = useState<SegmentedValue>(value);
@@ -64,16 +66,17 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
     Record<TransitionStatus, React.CSSProperties>
   > | null>(null);
 
-  const duration = 300;
-
-  const defaultStyle: React.CSSProperties = {
-    position: 'absolute',
-    left: 0,
-    height: '32px',
-    borderRadius: '4px',
-    backgroundColor: 'white',
-    transition: `width ${duration}ms ease-out, transform ${duration}ms ease-out`
-  };
+  const defaultStyle: React.CSSProperties = useMemo(
+    () => ({
+      position: 'absolute',
+      left: 0,
+      height: '32px',
+      borderRadius: '4px',
+      backgroundColor: theme.palette.primary.main,
+      transition: `width ${DURATION}ms ease-out, transform ${DURATION}ms ease-out`
+    }),
+    [theme.palette.primary.main]
+  );
 
   useLayoutEffect(() => {
     if (prevValue !== value) {
@@ -108,8 +111,6 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
     value
   ]);
 
-  console.log(isInTransition, transitionStyles);
-
   const handleEntered = useCallback(() => {
     setTransitionStyles(null);
     onMotionEnd();
@@ -120,7 +121,7 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
       in={isInTransition && !!transitionStyles}
       nodeRef={optionTransitionRef}
       timeout={{
-        enter: duration,
+        enter: DURATION,
         exit: 0
       }}
       onEntered={handleEntered}
@@ -209,9 +210,15 @@ export const Segmented = <T extends string | Option>({
                 margin: '0px 2px',
                 padding: '4px',
                 cursor: 'pointer',
+                userSelect: 'none',
+                transition: `color ${DURATION}ms ease-in-out`,
+                color:
+                  optionValue === selectedValue
+                    ? theme.palette.primary.contrastText
+                    : theme.palette.text.primary,
                 backgroundColor:
                   optionValue === selectedValue && !isInTransition
-                    ? theme.palette.background.paper
+                    ? theme.palette.primary.main
                     : 'transparent'
               })}
             >
