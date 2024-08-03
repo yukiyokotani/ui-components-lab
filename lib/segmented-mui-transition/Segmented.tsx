@@ -200,32 +200,30 @@ export const Segmented = <T extends string | Option>({
           const optionLabel = getOptionLabel(option);
           const optionValue = getOptionValue(option);
           return (
-            <Box
+            <label
               key={typeof option === 'string' ? option : option.value}
-              className='segmented-option'
-              sx={(theme) => ({
-                display: 'inline-block',
-                position: 'relative',
-                borderRadius: '4px',
-                margin: '0px 2px',
-                padding: '4px',
+              style={{
                 cursor: 'pointer',
-                userSelect: 'none',
-                transition: `color ${DURATION}ms ease-in-out`,
-                color:
-                  optionValue === selectedValue
-                    ? theme.palette.primary.contrastText
-                    : theme.palette.text.disabled,
-                backgroundColor:
-                  optionValue === selectedValue && !isInTransition
-                    ? theme.palette.primary.main
-                    : 'transparent'
-              })}
+                margin: '0px 2px'
+              }}
             >
-              <label
-                style={{
-                  cursor: 'pointer'
-                }}
+              <Box
+                className='segmented-option'
+                sx={(theme) => ({
+                  display: 'inline-block',
+                  position: 'relative',
+                  borderRadius: '4px',
+                  padding: '4px',
+                  transition: `color ${DURATION}ms ease-in-out`,
+                  color:
+                    optionValue === selectedValue
+                      ? theme.palette.primary.contrastText
+                      : theme.palette.text.disabled,
+                  backgroundColor:
+                    optionValue === selectedValue && !isInTransition
+                      ? theme.palette.primary.main
+                      : 'transparent'
+                })}
               >
                 <input
                   type='radio'
@@ -240,9 +238,11 @@ export const Segmented = <T extends string | Option>({
                     setSelectedValue(optionValue);
                   }}
                 />
-                <div title={optionLabel}>{optionLabel}</div>
-              </label>
-            </Box>
+                <div style={{ userSelect: 'none' }} title={optionLabel}>
+                  {optionLabel}
+                </div>
+              </Box>
+            </label>
           );
         })}
       </fieldset>
