@@ -2,7 +2,7 @@ import { Box, useTheme } from '@mui/material';
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Transition, TransitionStatus } from 'react-transition-group';
 
-const DURATION = 300;
+const DURATION = 200;
 
 type SegmentedValue = string | number;
 
@@ -73,7 +73,7 @@ const OptionTransition: React.FC<OptionTransitionProps> = ({
       height: '32px',
       borderRadius: '4px',
       backgroundColor: theme.palette.primary.main,
-      transition: `width ${DURATION}ms ease-out, transform ${DURATION}ms ease-out`
+      transition: `width ${DURATION}ms ease-in-out, transform ${DURATION}ms ease-in-out`
     }),
     [theme.palette.primary.main]
   );
