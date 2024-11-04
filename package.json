@@ -61,5 +61,8 @@
   "peerDependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.2.22"
+  },
+  "dependencies": {
+    "@mui/icons-material": "^6.1.6"
   }
 }
